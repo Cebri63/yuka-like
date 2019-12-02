@@ -30,6 +30,11 @@ const HomeScreen = () => {
 
   let color = renderNutriColor();
 
+  // next step
+
+  // get history of scanned products by requesting the server
+  // return this history
+
   getData = async () => {
     try {
       const response = await axios.get(
@@ -42,9 +47,32 @@ const HomeScreen = () => {
     }
   };
 
+  saveData = async () => {
+    try {
+      const response = await axios.post(
+        "https://yuka-back.herokuapp.com/create",
+        {
+          product_id: data._id,
+          name: data.product_name,
+          brand: data.stores_tags.length > 0 && data.stores_tags[0],
+          nutriScore: data.nutriscore_score,
+          date: m,
+          image: data.image_front_url
+        }
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   useEffect(() => {
     barCode && getData();
   }, [barCode]);
+
+  useEffect(() => {
+    Object.keys(data).length > 0 && saveData();
+  }, [data]);
 
   return (
     <View>
