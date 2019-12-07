@@ -1,15 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  Modal,
-  Image,
-  AsyncStorage,
-  RefreshControl,
-  ScrollView
-} from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Modal, RefreshControl, ScrollView } from "react-native";
 
 import ScanScreen from "./ScanScreen";
 import Product from "./Product";

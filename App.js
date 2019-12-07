@@ -37,7 +37,7 @@ export default function App() {
   return (
     <NavigationNativeContainer>
       <Stack.Navigator>
-        {/* {isLoading ? (
+        {isLoading ? (
           <Stack.Screen options={{ header: () => null }} name="splashScreen">
             {() => (
               <View
@@ -61,71 +61,74 @@ export default function App() {
               </View>
             )}
           </Stack.Screen>
-        ) : ( */}
-        <Stack.Screen options={{ header: () => null }}>
-          {() => (
-            <Tab.Navigator
-              tabBarOptions={{
-                tabStyle: { width: 100 },
-                showIcon: true,
-                showLabel: false,
-                style: {
-                  backgroundColor: "#5DCC71",
-                  paddingTop: Constants.statusBarHeight
-                }
-              }}
-            >
-              <Tab.Screen
-                options={{
-                  title: false,
-                  tabBarIcon: () => (
-                    <MaterialCommunityIcons
-                      name="food-apple"
-                      size={26}
-                      color="white"
-                    />
-                    // <Carotte />
-                  )
+        ) : (
+          <Stack.Screen options={{ header: () => null }}>
+            {() => (
+              <Tab.Navigator
+                tabBarOptions={{
+                  tabStyle: { width: 100 },
+                  showIcon: true,
+                  showLabel: false,
+                  style: {
+                    backgroundColor: "#5DCC71",
+                    paddingTop: Constants.statusBarHeight
+                  }
                 }}
-                name="Home"
               >
-                {() => (
-                  <Stack.Navigator>
-                    <Stack.Screen name="home" options={{ header: () => null }}>
-                      {() => (
-                        <HomeScreen
-                          getHistory={getHistory}
-                          isLoading={isLoading}
-                          history={history}
-                        />
-                      )}
-                    </Stack.Screen>
-                    <Stack.Screen name="product">
-                      {() => <Product />}
-                    </Stack.Screen>
-                  </Stack.Navigator>
-                )}
-              </Tab.Screen>
+                <Tab.Screen
+                  options={{
+                    title: false,
+                    tabBarIcon: () => (
+                      <MaterialCommunityIcons
+                        name="food-apple"
+                        size={26}
+                        color="white"
+                      />
+                      // <Carotte />
+                    )
+                  }}
+                  name="Home"
+                >
+                  {() => (
+                    <Stack.Navigator>
+                      <Stack.Screen
+                        name="home"
+                        options={{ header: () => null }}
+                      >
+                        {() => (
+                          <HomeScreen
+                            getHistory={getHistory}
+                            isLoading={isLoading}
+                            history={history}
+                          />
+                        )}
+                      </Stack.Screen>
+                      <Stack.Screen name="product">
+                        {() => <Product />}
+                      </Stack.Screen>
+                    </Stack.Navigator>
+                  )}
+                </Tab.Screen>
 
-              <Tab.Screen
-                options={{
-                  title: false,
-                  tabBarIcon: () => (
-                    <MaterialCommunityIcons
-                      name="star-box"
-                      size={26}
-                      color="white"
-                    />
-                    // <Carotte />
-                  )
-                }}
-                name="fav"
-                component={FavScreen}
-              />
-            </Tab.Navigator>
-          )}
-        </Stack.Screen>
-        {/* )} */}
+                <Tab.Screen
+                  options={{
+                    title: false,
+                    tabBarIcon: () => (
+                      <MaterialCommunityIcons
+                        name="star-box"
+                        size={26}
+                        color="white"
+                      />
+                      // <Carotte />
+                    )
+                  }}
+                  name="fav"
+                  component={FavScreen}
+                />
+              </Tab.Navigator>
+            )}
+          </Stack.Screen>
+        )}
       </Stack.Navigator>
     </NavigationNativeContainer>
   );
