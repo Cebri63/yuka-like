@@ -1,18 +1,10 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  Dimensions,
-  Image,
-  Modal
-} from "react-native";
+import { View, Text, StyleSheet, Image, Modal } from "react-native";
 
-import ScanButton from "./ScanButton";
-import ScanScreen from "./ScanScreen";
-import Quality from "./Quality";
-import BackButton from "./BackButton";
+import ScanButton from "../components/ScanButton";
+import ScanScreen from "../screens/ScanScreen";
+import Quality from "../components/Quality";
+import BackButton from "../components/BackButton";
 
 const ProductScreen = ({
   setIsVisible,
@@ -20,8 +12,7 @@ const ProductScreen = ({
   scanned,
   isVisible,
   setBarCode,
-  data,
-  color
+  data
 }) => {
   return (
     <View style={styles.container}>

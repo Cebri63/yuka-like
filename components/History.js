@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, FlatList, SafeAreaView, Image } from "react-native";
+import { View, Text, FlatList, Image } from "react-native";
 
 import Quality from "./Quality";
 import { Facebook } from "react-content-loader/native";

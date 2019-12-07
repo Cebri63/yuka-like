@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Modal, RefreshControl, ScrollView } from "react-native";
 
 import ScanScreen from "./ScanScreen";
-import Product from "./Product";
-import History from "./History";
-import ScanButton from "./ScanButton";
+import ProductScreen from "./ProductScreen";
+import History from "../components/History";
+import ScanButton from "../components/ScanButton";
 import axios from "axios";
 import moment from "moment";
 import "moment/locale/fr";
@@ -94,7 +94,7 @@ const HomeScreen = ({ history, isLoading, getHistory }) => {
       <ScanButton setScanned={setScanned} setIsVisible={setIsVisible} />
     </>
   ) : (
-    <Product
+    <ProductScreen
       data={data}
       setScanned={setScanned}
       scanned={scanned}

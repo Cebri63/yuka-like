@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  Image
-} from "react-native";
+import { View, Text, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import BottomSheet from "reanimated-bottom-sheet";
 
 const FavScreen = () => {

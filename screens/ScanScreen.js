@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Dimensions, Image } from "react-native";
+import { View, Text, StyleSheet, Dimensions } from "react-native";
 import Constants from "expo-constants";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import * as Permissions from "expo-permissions";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const { width } = Dimensions.get("window");
-
 const qrSize = width * 0.7;
-
-// TODO
-// https://github.com/osdnk/react-native-reanimated-bottom-sheet
 
 const ScanScreen = ({ setIsVisible, setBarCode, setScanned, scanned }) => {
   const [cameraPermission, setCameraPermission] = useState(null);
@@ -20,7 +15,6 @@ const ScanScreen = ({ setIsVisible, setBarCode, setScanned, scanned }) => {
     setScanned(true);
     setIsVisible(false);
     setBarCode(data);
-    // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
   };
 
   useEffect(() => {

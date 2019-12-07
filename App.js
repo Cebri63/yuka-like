@@ -9,9 +9,9 @@ import axios from "axios";
 
 import Constants from "expo-constants";
 
-import HomeScreen from "./components/HomeScreen";
-import FavScreen from "./components/FavScreen";
-import Product from "./components/Product";
+import HomeScreen from "./screens/HomeScreen";
+import FavScreen from "./screens/FavScreen";
+import ProductScreen from "./screens/ProductScreen";
 
 import LogoYuka from "./assets/images/LogoYuka";
 
@@ -84,7 +84,6 @@ export default function App() {
                         size={26}
                         color="white"
                       />
-                      // <Carotte />
                     )
                   }}
                   name="Home"
@@ -104,7 +103,7 @@ export default function App() {
                         )}
                       </Stack.Screen>
                       <Stack.Screen name="product">
-                        {() => <Product />}
+                        {() => <ProductScreen />}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}
@@ -119,7 +118,6 @@ export default function App() {
                         size={26}
                         color="white"
                       />
-                      // <Carotte />
                     )
                   }}
                   name="fav"
