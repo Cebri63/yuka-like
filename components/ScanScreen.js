@@ -7,11 +7,14 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const { width } = Dimensions.get("window");
+
 const qrSize = width * 0.7;
 
-const ScanScreen = ({ setIsVisible, setBarCode }) => {
+// TODO
+// https://github.com/osdnk/react-native-reanimated-bottom-sheet
+
+const ScanScreen = ({ setIsVisible, setBarCode, setScanned, scanned }) => {
   const [cameraPermission, setCameraPermission] = useState(null);
-  const [scanned, setScanned] = useState(false);
 
   handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);

@@ -1,39 +1,40 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Modal, Image, AsyncStorage } from "react-native";
+import {
+  View,
+  Text,
+  Modal,
+  Image,
+  AsyncStorage,
+  RefreshControl,
+  ScrollView
+} from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import ScanScreen from "./ScanScreen";
+import Product from "./Product";
+import History from "./History";
+import ScanButton from "./ScanButton";
 import axios from "axios";
 import moment from "moment";
 import "moment/locale/fr";
 
-const HomeScreen = () => {
+const HomeScreen = ({ history, isLoading, getHistory }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [barCode, setBarCode] = useState(null);
   const [data, setData] = useState({});
+  const [scanned, setScanned] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   moment.locale("fr");
-  let m = moment(new Date(), "YYYY-MM-DD");
+  let m = moment(new Date());
 
-  renderNutriColor = () => {
-    if (data.nutriscore_score >= 75) {
-      return "green";
-    } else if (data.nutriscore_score < 25) {
-      return "red";
-    } else if (data.nutriscore_score >= 25 && data.nutriscore_score < 50) {
-      return "orange";
-    } else if (data.nutriscore_score >= 50 && data.nutriscore_score < 75) {
-      return "yellow";
-    }
+  onRefresh = () => {
+    setRefreshing(true);
+    getHistory().then(() => {
+      setRefreshing(false);
+    });
   };
-
-  let color = renderNutriColor();
-
-  // next step
-
-  // get history of scanned products by requesting the server
-  // return this history
 
   getData = async () => {
     try {
@@ -54,13 +55,12 @@ const HomeScreen = () => {
         {
           product_id: data._id,
           name: data.product_name,
-          brand: data.stores_tags.length > 0 && data.stores_tags[0],
-          nutriScore: data.nutriscore_score,
+          brand: data.brands,
+          nutriScore: data.nutriscore_grade,
           date: m,
           image: data.image_front_url
         }
       );
-      console.log(response.data);
     } catch (error) {
       console.log(error.message);
     }
@@ -74,40 +74,44 @@ const HomeScreen = () => {
     Object.keys(data).length > 0 && saveData();
   }, [data]);
 
-  return (
-    <View>
-      <Text>HomeScreen</Text>
-      <Modal
-        onRequestClose={() => {
-          setIsVisible(false);
-        }}
-        visible={isVisible}
-      >
-        <ScanScreen setBarCode={setBarCode} setIsVisible={setIsVisible} />
-      </Modal>
-      <TouchableOpacity
-        onPress={() => {
-          setIsVisible(true);
-        }}
-      >
-        <Text>Go to scan</Text>
-      </TouchableOpacity>
-      {data.image_front_url && (
-        <>
-          <Text>{data.product_name}</Text>
-          <Text>{data.stores_tags[0]}</Text>
-          <Text>{data.nutriscore_score}</Text>
-          <MaterialCommunityIcons name="checkbox-blank-circle" color={color} />
-          <Text>{m.fromNow()}</Text>
-          <Image
-            style={{ width: 150, height: 200 }}
-            source={{
-              uri: data.image_front_url
-            }}
+  return !scanned ? (
+    <>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            colors={["#5DCC71", "white"]}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
           />
-        </>
-      )}
-    </View>
+        }
+        style={{ flex: 1 }}
+      >
+        <History isLoading={isLoading} data={history} />
+        <Modal
+          onRequestClose={() => {
+            setIsVisible(false);
+          }}
+          visible={isVisible}
+        >
+          <ScanScreen
+            setScanned={setScanned}
+            scanned={scanned}
+            setBarCode={setBarCode}
+            setIsVisible={setIsVisible}
+          />
+        </Modal>
+      </ScrollView>
+      <ScanButton setScanned={setScanned} setIsVisible={setIsVisible} />
+    </>
+  ) : (
+    <Product
+      data={data}
+      setScanned={setScanned}
+      scanned={scanned}
+      setBarCode={setBarCode}
+      setIsVisible={setIsVisible}
+      isVisible={isVisible}
+    />
   );
 };
 
