@@ -62,9 +62,7 @@ const HomeScreen = ({ history, isLoading, getHistory }) => {
     barCode && getData();
   }, [barCode]);
 
-  useEffect(() => {
-    console.log("HomeScreen    ", fromHistory);
-  }, [fromHistory]);
+  useEffect(() => {}, [fromHistory]);
 
   useEffect(() => {
     Object.keys(data).length > 0 && saveData();

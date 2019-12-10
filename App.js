@@ -15,13 +15,30 @@ import ProductScreen from "./screens/ProductScreen";
 
 import LogoYuka from "./assets/images/LogoYuka";
 
+import { AsyncStorage } from "react-native";
+
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import LoginScreen from "./screens/LoginScreen";
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [history, setHistory] = useState([]);
+  const [userToken, setUserToken] = useState(null);
+  const [isConnected, setIsConnected] = useState(false);
+
+  console.log(AsyncStorage.getItem("userToken"));
+  // AsyncStorage.removeItem("userToken");
+
+  const setToken = async token => {
+    if (token) {
+      AsyncStorage.setItem("userToken", token);
+    } else {
+      AsyncStorage.removeItem("userToken");
+    }
+    setUserToken(token);
+  };
 
   const getHistory = async () => {
     const response = await axios.get("https://yuka-back.herokuapp.com/");
@@ -29,14 +46,29 @@ export default function App() {
     setIsLoading(false);
   };
 
+  const bootstrapAsync = async () => {
+    // We should also handle error for production apps
+    const userToken = await AsyncStorage.getItem("userToken");
+    if (!userToken) {
+      setIsConnected(false);
+    } else {
+      setUserToken(userToken);
+      getHistory();
+    }
+  };
+
   useEffect(() => {
-    getHistory();
+    bootstrapAsync();
   }, []);
 
   return (
     <NavigationNativeContainer>
       <Stack.Navigator>
-        {isLoading ? (
+        {!userToken ? (
+          <Stack.Screen name="login" options={{ header: () => null }}>
+            {() => <LoginScreen setToken={setToken} />}
+          </Stack.Screen>
+        ) : isLoading ? (
           <Stack.Screen options={{ header: () => null }} name="splashScreen">
             {() => (
               <View
