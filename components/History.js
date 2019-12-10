@@ -6,9 +6,15 @@ import { Facebook } from "react-content-loader/native";
 
 import moment from "moment";
 import "moment/locale/fr";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 moment.locale("fr");
 
-const History = ({ data, isLoading }) => {
+const History = ({ data, isLoading, setFromHistory, setItem }) => {
+  goProduct = async item => {
+    setFromHistory(true);
+    setItem(item);
+  };
+
   return isLoading ? (
     <View
       style={{
@@ -27,7 +33,10 @@ const History = ({ data, isLoading }) => {
       keyExtractor={item => item._id}
       data={data}
       renderItem={({ item }) => (
-        <View
+        <TouchableWithoutFeedback
+          onPress={() => {
+            goProduct(item);
+          }}
           style={{
             height: 150,
             backgroundColor: "white",
@@ -51,7 +60,7 @@ const History = ({ data, isLoading }) => {
             {item.nutriScore ? <Quality nutriScore={item.nutriScore} /> : null}
             <Text>{moment(item.date).fromNow()}</Text>
           </View>
-        </View>
+        </TouchableWithoutFeedback>
       )}
     />
   );

@@ -15,6 +15,8 @@ const HomeScreen = ({ history, isLoading, getHistory }) => {
   const [data, setData] = useState({});
   const [scanned, setScanned] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [fromHistory, setFromHistory] = useState(false);
+  const [item, setItem] = useState({});
 
   moment.locale("fr");
   let m = moment(new Date());
@@ -61,41 +63,64 @@ const HomeScreen = ({ history, isLoading, getHistory }) => {
   }, [barCode]);
 
   useEffect(() => {
+    console.log("HomeScreen    ", fromHistory);
+  }, [fromHistory]);
+
+  useEffect(() => {
     Object.keys(data).length > 0 && saveData();
   }, [data]);
 
-  return !scanned ? (
-    <>
-      <ScrollView
-        refreshControl={
-          <RefreshControl
-            colors={["#5DCC71", "white"]}
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-          />
-        }
-        style={{ flex: 1 }}
-      >
-        <History isLoading={isLoading} data={history} />
-        <Modal
-          onRequestClose={() => {
-            setIsVisible(false);
-          }}
-          visible={isVisible}
+  return !fromHistory ? (
+    !scanned ? (
+      <>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              colors={["#5DCC71", "white"]}
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+            />
+          }
+          style={{ flex: 1 }}
         >
-          <ScanScreen
-            setScanned={setScanned}
-            scanned={scanned}
-            setBarCode={setBarCode}
-            setIsVisible={setIsVisible}
+          <History
+            setFromHistory={setFromHistory}
+            setItem={setItem}
+            isLoading={isLoading}
+            data={history}
           />
-        </Modal>
-      </ScrollView>
-      <ScanButton setScanned={setScanned} setIsVisible={setIsVisible} />
-    </>
+          <Modal
+            onRequestClose={() => {
+              setIsVisible(false);
+            }}
+            visible={isVisible}
+          >
+            <ScanScreen
+              setScanned={setScanned}
+              scanned={scanned}
+              setBarCode={setBarCode}
+              setIsVisible={setIsVisible}
+            />
+          </Modal>
+        </ScrollView>
+        <ScanButton setScanned={setScanned} setIsVisible={setIsVisible} />
+      </>
+    ) : (
+      <ProductScreen
+        fromHistory={fromHistory}
+        data={data}
+        setScanned={setScanned}
+        scanned={scanned}
+        setBarCode={setBarCode}
+        setIsVisible={setIsVisible}
+        isVisible={isVisible}
+      />
+    )
   ) : (
     <ProductScreen
-      data={data}
+      fromHistory={fromHistory}
+      setFromHistory={setFromHistory}
+      data={item}
       setScanned={setScanned}
       scanned={scanned}
       setBarCode={setBarCode}

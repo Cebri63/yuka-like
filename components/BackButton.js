@@ -2,7 +2,10 @@ import React from "react";
 import { View, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-const BackButton = ({ setScanned }) => {
+import { useNavigation } from "@react-navigation/core";
+
+const BackButton = ({ setScanned, setFromHistory, fromHistory }) => {
+  const navigation = useNavigation();
   return (
     <View style={{ position: "absolute", left: 30, bottom: 40 }}>
       <TouchableOpacity
@@ -15,7 +18,7 @@ const BackButton = ({ setScanned }) => {
           alignItems: "center"
         }}
         onPress={() => {
-          setScanned(false);
+          fromHistory ? setFromHistory(false) : setScanned(false);
         }}
       >
         <MaterialCommunityIcons

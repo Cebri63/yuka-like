@@ -12,11 +12,12 @@ const ProductScreen = ({
   scanned,
   isVisible,
   setBarCode,
-  data
+  data,
+  fromHistory,
+  setFromHistory
 }) => {
-  return (
+  return !fromHistory ? (
     <View style={styles.container}>
-      <Text>ProductScreen</Text>
       <Modal
         onRequestClose={() => {
           setIsVisible(false);
@@ -45,6 +46,27 @@ const ProductScreen = ({
             source={{
               uri: data.image_front_url
             }}
+          />
+        </>
+      )}
+    </View>
+  ) : (
+    <View style={styles.container}>
+      {data.image && (
+        <>
+          <Text>{data.name}</Text>
+          <Text>{data.brand}</Text>
+          {data.nutriScore ? <Quality nutriScore={data.nutriScore} /> : null}
+          <Image
+            style={{ width: 150, height: 200 }}
+            source={{
+              uri: data.image
+            }}
+          />
+          <BackButton
+            fromHistory={fromHistory}
+            setFromHistory={setFromHistory}
+            setScanned={setScanned}
           />
         </>
       )}

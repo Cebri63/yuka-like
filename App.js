@@ -25,7 +25,6 @@ export default function App() {
 
   const getHistory = async () => {
     const response = await axios.get("https://yuka-back.herokuapp.com/");
-    console.log("montage du composant ====>   ", response.data);
     setHistory(response.data);
     setIsLoading(false);
   };
