@@ -67,7 +67,7 @@ export default function App() {
       <Stack.Navigator>
         {!userToken ? (
           <Stack.Screen name="login" options={{ header: () => null }}>
-            {() => <LoginScreen setToken={setToken} />}
+            {() => <LoginScreen getHistory={getHistory} setToken={setToken} />}
           </Stack.Screen>
         ) : isLoading ? (
           <Stack.Screen options={{ header: () => null }} name="splashScreen">

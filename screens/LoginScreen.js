@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import axios from "axios";
 import SignUp from "../components/SignUp";
 import LogoYuka from "../assets/images/LogoYuka";
-const LoginScreen = ({ setToken }) => {
+const LoginScreen = ({ setToken, getHistory }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [signUp, setSignUp] = useState(false);
@@ -19,6 +19,7 @@ const LoginScreen = ({ setToken }) => {
       );
       if (response.data.token) {
         setToken(response.data.token);
+        getHistory();
       } else {
         alert("Mauvais email et/ou mot de passe");
       }
