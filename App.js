@@ -168,8 +168,9 @@ export default function App() {
                     )
                   }}
                   name="profile"
-                  component={ProfileScreen}
-                />
+                >
+                  {() => <ProfileScreen setToken={setToken} />}
+                </Tab.Screen>
               </Tab.Navigator>
             )}
           </Stack.Screen>
