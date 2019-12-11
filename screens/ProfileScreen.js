@@ -4,7 +4,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 
 const ProfileScreen = ({ setToken }) => {
   return (
-    <View>
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Text>Wesh le profile</Text>
 
       <TouchableOpacity

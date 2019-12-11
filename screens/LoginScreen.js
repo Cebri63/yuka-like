@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator
+} from "react-native";
 import axios from "axios";
 import SignUp from "../components/SignUp";
 import LogoYuka from "../assets/images/LogoYuka";
@@ -7,9 +13,11 @@ const LoginScreen = ({ setToken, getHistory }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [signUp, setSignUp] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   log = async () => {
     try {
+      setIsLoading(true);
       const response = await axios.post(
         "https://yuka-back.herokuapp.com/log_in",
         {
@@ -19,6 +27,7 @@ const LoginScreen = ({ setToken, getHistory }) => {
       );
       if (response.data.token) {
         setToken(response.data.token);
+        setIsLoading(false);
         getHistory();
       } else {
         alert("Mauvais email et/ou mot de passe");
@@ -67,6 +76,7 @@ const LoginScreen = ({ setToken, getHistory }) => {
           placeholderTextColor="#5DCC71"
         />
         <TouchableOpacity
+          disabled={isLoading ? true : false}
           onPress={log}
           style={{
             backgroundColor: "#4A4A4A",
@@ -78,7 +88,11 @@ const LoginScreen = ({ setToken, getHistory }) => {
             borderRadius: 5
           }}
         >
-          <Text style={{ color: "white" }}> Se connecter</Text>
+          {isLoading ? (
+            <ActivityIndicator size="small" color="white" />
+          ) : (
+            <Text style={{ color: "white" }}> Se connecter</Text>
+          )}
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setSignUp(true)}>
           <Text style={{ color: "#4A4A4A", textDecorationLine: "underline" }}>
