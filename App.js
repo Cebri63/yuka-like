@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { NavigationNativeContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -12,13 +12,14 @@ import Constants from "expo-constants";
 import HomeScreen from "./screens/HomeScreen";
 import FavScreen from "./screens/FavScreen";
 import ProductScreen from "./screens/ProductScreen";
+import LoginScreen from "./screens/LoginScreen";
+import ProfileScreen from "./screens/ProfileScreen";
 
 import LogoYuka from "./assets/images/LogoYuka";
 
 import { AsyncStorage } from "react-native";
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import LoginScreen from "./screens/LoginScreen";
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
@@ -97,7 +98,8 @@ export default function App() {
             {() => (
               <Tab.Navigator
                 tabBarOptions={{
-                  tabStyle: { width: 100 },
+                  // tabStyle: { width: 100 },
+                  headerRight: <Text>Wesh</Text>,
                   showIcon: true,
                   showLabel: false,
                   style: {
@@ -153,6 +155,20 @@ export default function App() {
                   }}
                   name="fav"
                   component={FavScreen}
+                />
+                <Tab.Screen
+                  options={{
+                    title: false,
+                    tabBarIcon: () => (
+                      <MaterialCommunityIcons
+                        name="face-profile"
+                        size={26}
+                        color="white"
+                      />
+                    )
+                  }}
+                  name="profile"
+                  component={ProfileScreen}
                 />
               </Tab.Navigator>
             )}

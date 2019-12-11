@@ -4,7 +4,7 @@ import { View, Text, StyleSheet } from "react-native";
 const FavScreen = () => {
   return (
     <View style={styles.container}>
-      <Text>Le produit</Text>
+      <Text>Les favoris</Text>
     </View>
   );
 };
