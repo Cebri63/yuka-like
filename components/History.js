@@ -28,7 +28,7 @@ const History = ({ data, isLoading, setFromHistory, setItem }) => {
       <Facebook />
       <Facebook />
     </View>
-  ) : (
+  ) : data.length > 0 ? (
     <FlatList
       keyExtractor={item => item._id}
       data={data}
@@ -63,6 +63,17 @@ const History = ({ data, isLoading, setFromHistory, setItem }) => {
         </TouchableWithoutFeedback>
       )}
     />
+  ) : (
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 30
+      }}
+    >
+      <Text>Aucuns produits scannés</Text>
+    </View>
   );
 };
 

@@ -1,16 +1,24 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator
+} from "react-native";
 import axios from "axios";
 
 import LogoYuka from "../assets/images/LogoYuka";
 
-const SignUp = ({ setSignUp, setToken }) => {
+const SignUp = ({ setSignUp, setToken, setId, setUser }) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   sign = async () => {
     try {
+      setIsLoading(true);
       const response = await axios.post(
         "https://yuka-back.herokuapp.com/sign_up",
         {
@@ -21,10 +29,13 @@ const SignUp = ({ setSignUp, setToken }) => {
       );
 
       if (response.data.token) {
-        console.log(response.data);
         setToken(response.data.token);
+        setId(response.data._id);
+        setUser(response.data.username);
+        setIsLoading(false);
       } else {
         alert("Une erreur est survenue, veuillez réssayer.");
+        setIsLoading(false);
       }
     } catch (error) {
       console.log(error.message);
@@ -83,6 +94,7 @@ const SignUp = ({ setSignUp, setToken }) => {
         />
         <TouchableOpacity
           onPress={sign}
+          disabled={isLoading ? true : false}
           style={{
             backgroundColor: "#4A4A4A",
             marginVertical: 25,
@@ -93,7 +105,11 @@ const SignUp = ({ setSignUp, setToken }) => {
             borderRadius: 5
           }}
         >
-          <Text style={{ color: "white" }}> Se connecter</Text>
+          {isLoading ? (
+            <ActivityIndicator size="small" color="white" />
+          ) : (
+            <Text style={{ color: "white" }}> Se connecter</Text>
+          )}
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setSignUp(false)}>
           <Text style={{ color: "#4A4A4A", textDecorationLine: "underline" }}>

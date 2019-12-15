@@ -9,7 +9,7 @@ import axios from "axios";
 import moment from "moment";
 import "moment/locale/fr";
 
-const HomeScreen = ({ history, isLoading, getHistory }) => {
+const HomeScreen = ({ history, isLoading, getHistory, userId }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [barCode, setBarCode] = useState(null);
   const [data, setData] = useState({});
@@ -50,7 +50,8 @@ const HomeScreen = ({ history, isLoading, getHistory }) => {
           brand: data.brands,
           nutriScore: data.nutriscore_grade,
           date: m,
-          image: data.image_front_url
+          image: data.image_front_url,
+          user: userId
         }
       );
     } catch (error) {

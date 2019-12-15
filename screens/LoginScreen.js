@@ -9,7 +9,7 @@ import {
 import axios from "axios";
 import SignUp from "../components/SignUp";
 import LogoYuka from "../assets/images/LogoYuka";
-const LoginScreen = ({ setToken, getHistory }) => {
+const LoginScreen = ({ setToken, getHistory, setId, setUsername }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [signUp, setSignUp] = useState(false);
@@ -27,10 +27,13 @@ const LoginScreen = ({ setToken, getHistory }) => {
       );
       if (response.data.token) {
         setToken(response.data.token);
+        setId(response.data._id);
+        setUsername(response.data.username);
         setIsLoading(false);
         getHistory();
       } else {
         alert("Mauvais email et/ou mot de passe");
+        setIsLoading(false);
       }
     } catch (error) {
       console.log(error.message);
@@ -102,7 +105,12 @@ const LoginScreen = ({ setToken, getHistory }) => {
       </View>
     </View>
   ) : (
-    <SignUp setToken={setToken} setSignUp={setSignUp} />
+    <SignUp
+      setUser={setUsername}
+      setId={setId}
+      setToken={setToken}
+      setSignUp={setSignUp}
+    />
   );
 };
 

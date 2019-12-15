@@ -2,14 +2,14 @@ import React from "react";
 import { View, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-const ProfileScreen = ({ setToken }) => {
+const ProfileScreen = ({ setToken, setId, username }) => {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Wesh le profile</Text>
-
+      <Text>{username}</Text>
       <TouchableOpacity
         onPress={() => {
           setToken(null);
+          setId(null);
         }}
         style={{
           backgroundColor: "#4A4A4A",

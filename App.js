@@ -1,36 +1,30 @@
 import React, { useState, useEffect } from "react";
-import { View, Text } from "react-native";
+import { View, Text, AsyncStorage } from "react-native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { NavigationNativeContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
 import LottieView from "lottie-react-native";
-
 import axios from "axios";
-
 import Constants from "expo-constants";
-
 import HomeScreen from "./screens/HomeScreen";
 import FavScreen from "./screens/FavScreen";
 import ProductScreen from "./screens/ProductScreen";
 import LoginScreen from "./screens/LoginScreen";
 import ProfileScreen from "./screens/ProfileScreen";
-
 import LogoYuka from "./assets/images/LogoYuka";
-
-import { AsyncStorage } from "react-native";
-
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
+
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
-  const [history, setHistory] = useState([]);
+  const [history, setHistory] = useState(null);
   const [userToken, setUserToken] = useState(null);
+  const [userId, setUserId] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
-
-  console.log(AsyncStorage.getItem("userToken"));
-  // AsyncStorage.removeItem("userToken");
+  const [username, setUsername] = useState("");
 
   const setToken = async token => {
     if (token) {
@@ -41,20 +35,43 @@ export default function App() {
     setUserToken(token);
   };
 
+  const setId = id => {
+    if (id) {
+      AsyncStorage.setItem("userId", id);
+    } else {
+      AsyncStorage.removeItem("userId");
+    }
+    setUserId(id);
+  };
+
+  useEffect(() => {
+    if (userId) {
+      getHistory();
+    }
+  }, [userId]);
+
   const getHistory = async () => {
-    const response = await axios.get("https://yuka-back.herokuapp.com/");
-    setHistory(response.data);
+    const response = await axios.get(
+      `https://yuka-back.herokuapp.com/${userId}`
+    );
+
+    if (Array.isArray(response.data)) {
+      setHistory(response.data);
+      setIsLoading(false);
+    }
     setIsLoading(false);
   };
 
   const bootstrapAsync = async () => {
     // We should also handle error for production apps
     const userToken = await AsyncStorage.getItem("userToken");
-    if (!userToken) {
+    const userId = await AsyncStorage.getItem("userId");
+
+    if (!userToken || !userId) {
       setIsConnected(false);
     } else {
       setUserToken(userToken);
-      getHistory();
+      setUserId(userId);
     }
   };
 
@@ -67,7 +84,14 @@ export default function App() {
       <Stack.Navigator>
         {!userToken ? (
           <Stack.Screen name="login" options={{ header: () => null }}>
-            {() => <LoginScreen getHistory={getHistory} setToken={setToken} />}
+            {() => (
+              <LoginScreen
+                setId={setId}
+                getHistory={getHistory}
+                setToken={setToken}
+                setUsername={setUsername}
+              />
+            )}
           </Stack.Screen>
         ) : isLoading ? (
           <Stack.Screen options={{ header: () => null }} name="splashScreen">
@@ -132,6 +156,7 @@ export default function App() {
                             getHistory={getHistory}
                             isLoading={isLoading}
                             history={history}
+                            userId={userId}
                           />
                         )}
                       </Stack.Screen>
@@ -169,7 +194,13 @@ export default function App() {
                   }}
                   name="profile"
                 >
-                  {() => <ProfileScreen setToken={setToken} />}
+                  {() => (
+                    <ProfileScreen
+                      username={username}
+                      setId={setId}
+                      setToken={setToken}
+                    />
+                  )}
                 </Tab.Screen>
               </Tab.Navigator>
             )}
