@@ -22,7 +22,6 @@ expo start
 
 - Website: https://www.linkedin.com/in/brice-dev/
 - Github: [@Cebri63](https://github.com/Cebri63)
-- LinkedIn: [@Brice LESNE](https://linkedin.com/in/Brice LESNE)
 
 ## Show your support
 
